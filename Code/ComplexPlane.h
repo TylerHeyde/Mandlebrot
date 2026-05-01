@@ -1,6 +1,9 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <complex>
+
+using namespace std;
 
 // base global variables for the set
 const unsigned int MAX_ITER = 64;

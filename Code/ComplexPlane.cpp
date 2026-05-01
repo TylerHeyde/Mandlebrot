@@ -4,14 +4,14 @@
 ComplexPlane::ComplexPlane(int pixelWidth, int pixelHeight) {
 	m_pixel_size = { pixelWidth, pixelHeight };
 	m_aspectRatio = (float)sf::VideoMode::getDesktopMode().height / (float)sf::VideoMode::getDesktopMode().width;
-	m_plane_center = {0, 0};
+	m_plane_center = { 0, 0 };
 	m_zoomCount = 0;
 	m_State = State::CALCULATING;
 	m_vArray.setPrimitiveType(sf::Points);
 	m_vArray.resize(pixelWidth * pixelHeight);
 }
 
-void ComplexPlane::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void ComplexPlane::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	target.draw(m_vArray, states);
 }
 
@@ -37,31 +37,42 @@ void ComplexPlane::updateRender() {
 	}
 }
 
-void ComplexPlane::zoomIn(){
-
+void ComplexPlane::zoomIn() {
+	m_zoomCount++;
+	double x_size = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount);
+	double y_size = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
+	m_plane_size = { x_size, y_size };
+	m_State = CALCULATING;
 }
 
-void ComplexPlane::zoomOut(){
-
+void ComplexPlane::zoomOut() {
+	m_zoomCount--;
+	double x_size = BASE_WIDTH * pow(BASE_ZOOM, m_zoomCount);
+	double y_size = BASE_HEIGHT * m_aspectRatio * pow(BASE_ZOOM, m_zoomCount);
+	m_plane_size = { x_size, y_size };
+	m_State = CALCULATING;
 }
 
-void ComplexPlane::setCenter(sf::Vector2i mousePixel){
-
+void ComplexPlane::setCenter(sf::Vector2i mousePixel) {
+	m_plane_center = ComplexPlane::mapPixelToCoords(mousePixel);
 }
 
-void ComplexPlane::setMouseLocation(sf::Vector2i mousePixel){
-
+void ComplexPlane::setMouseLocation(sf::Vector2i mousePixel) {
+	//sf::Mouse::getPosition(window);	// relative to the window
+	// sf::Mouse::getPosition()	// global screen position
+	// window.mapPixelToCoords(sf::Mouse::getPosition(window))	// as it floats
+	m_mouseLocation = mapPixelToCoords(sf::Mouse::getPosition());
 }
-
-void ComplexPlane::loadText(sf::Text& text){
-
+// TODO:
+void ComplexPlane::loadText(sf::Text& text) {
+	;	// idk how to draw string on the canvase
 }
 
 //---private functions---//
 int ComplexPlane::countIterations(sf::Vector2f coord) {
 	int iterations = 0;
 	complex<double> c = { coord.x, coord.y };
-	complex<double> z = (0,0);
+	complex<double> z = (0, 0);
 
 	//was doing some research and found that using norm() is faster than abs() for checking the magnitude of a complex number, so I switched to that
 	while (norm(z) <= 4.0 && iterations < MAX_ITER) {

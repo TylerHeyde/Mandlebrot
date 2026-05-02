@@ -1,18 +1,23 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+#include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
 #include <complex>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
 // base global variables for the set
 const unsigned int MAX_ITER = 64;
-const float BASE_WIDTH = 4.0;
-const float BASE_HEIGHT = 4.0;
-const float BASE_ZOOM = 0.5;
+const float BASE_WIDTH = 4.0f;
+const float BASE_HEIGHT = 4.0f;
+const float BASE_ZOOM = 0.5f;
 
 // enum for the state of the set
-enum State {CALCULATING, DISPLAYING};
+enum State { CALCULATING, DISPLAYING };
 
 // Class for the complex plane, child of parent "Drawable" so it can be drawn to the window
 class ComplexPlane : public sf::Drawable

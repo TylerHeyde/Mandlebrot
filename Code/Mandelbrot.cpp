@@ -1,15 +1,9 @@
 #include <SFML/Graphics.hpp>
-
 #include <iostream>
 #include "ComplexPlane.h"
 
-
-
 using namespace sf;
-
 using namespace std;
-
-
 
 
 int main()
@@ -23,7 +17,17 @@ int main()
     VideoMode vm(pixelWidth, pixelHeight);
     // Create the main redering window 
     RenderWindow window(vm, "Mandlebrot", Style::Default);
-    // ComplexPlane cPlane(pixelWidth, pixelHeight);
+    ComplexPlane cPlane(pixelWidth, pixelHeight);
+
+    sf::Font Arial;
+    Arial.loadFromFile("Fonts\\Arial Types\\ARIAL.ttf");
+
+    sf::Text info;
+    info.setFont(Arial);
+    info.setCharacterSize(10);
+    info.setFillColor(sf::Color::White);
+    info.setPosition(5.0f, 5.0f);
+
     // debug code for testing rendering 
     // VertexArray particle1(TriangleFan);
     // particle1.resize(5); 
@@ -54,29 +58,38 @@ int main()
             {
                 if (event.mouseButton.button == sf::Mouse::Right)
                 {
-                    cout << "zoomIn()\n";
-                    // zoomIn();
+                    cout << "zoomOut()\n";
+                    cPlane.zoomOut();
+                    cPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
                 }
                 else if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    // zoomOut();
-                    cout << "zoomOut()\n";
+                    cout << "zoomIn()\n";
+                    cPlane.zoomIn();
+                    cPlane.setCenter({ event.mouseButton.x, event.mouseButton.y });
                 }
             }
             if (event.type == sf::Event::MouseMoved)
             {
-                // setMouseLocation();
+                cPlane.setMouseLocation(sf::Mouse::getPosition());
                 cout << "setMouseLocation\n";
+            }
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
             }
         }
         ///Update
-        // cPlane.updateRender();
-        // cPlane.loadText();
+        cPlane.updateRender();
+        cPlane.loadText(info);
 
         ///Draw
         window.clear();
-        // cPlane.draw();
-        // window.display();
+        window.draw(cPlane);
+        // cPlane.draw(window, RenderStates::Default);
+        window.draw(info);
+
+        window.display();
     }
 
 

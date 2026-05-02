@@ -20,7 +20,7 @@ int main()
     ComplexPlane cPlane(pixelWidth, pixelHeight);
 
     sf::Font Arial;
-    Arial.loadFromFile("Fonts/Arial Types/ARIAL.ttf");
+    Arial.loadFromFile("Fonts/Arial_Types/ARIAL.TTF");
 
     sf::Text info;
     info.setFont(Arial);
